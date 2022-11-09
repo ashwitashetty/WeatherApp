@@ -10,6 +10,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import React from 'react';
+import Icon from "react-native-vector-icons/MaterialIcons"
 // import LinearGradient from 'react-native-linear-gradient'
 
 import background from '../assets/images/background.png';
@@ -22,10 +23,15 @@ import icon_humidity_info from '../assets/images/icon_humidity_info.png';
 import icon_precipitation_info from '../assets/images/icon_precipitation_info.png';
 import icon_temperature_info from '../assets/images/icon_temperature_info.png';
 
+import SearchScreen from './SearchScreen';
+
 const HomeScreen = ({navigation}) => {
 
   const handleDrawer=()=>{
     navigation.openDrawer();
+  }
+  const handleSearch=()=>{
+    navigation.navigate('Search')
   }
   return (
     <View style={styles.container}>
@@ -41,8 +47,8 @@ const HomeScreen = ({navigation}) => {
               </TouchableOpacity>
               <Image source={logo} style={styles.logo} />
             </View>
-            <TouchableOpacity>
-            <Image source={icon_search_white} style={styles.search} />
+            <TouchableOpacity onPress={handleSearch}>
+            <Icon name="search" size={23} color={"#FFFFFF"} style={styles.search} />
             </TouchableOpacity>
           </View>
 
@@ -142,8 +148,8 @@ const styles = StyleSheet.create({
     width: 113,
   },
   search: {
-    height: 17.49,
-    width: 17.49,
+    // height: 17.49,
+    // width: 17.49,
     marginTop: 5,
   },
   textView: {
@@ -230,6 +236,9 @@ const styles = StyleSheet.create({
     lineheight: 19,
     backgroundColor: '#FFFFFF',
     padding: 5,
+    borderTopLeftRadius:2,
+    borderBottomLeftRadius:2,
+
 
   },
   faranheit: {
@@ -241,7 +250,8 @@ const styles = StyleSheet.create({
     padding: 5,
     borderWidth: 1,
     borderColor: 'white',
-    // borderRadius:2,
+    borderTopRightRadius:2,
+    borderBottomRightRadius:2,
   },
   bottomDetails: {
     width: '35%',

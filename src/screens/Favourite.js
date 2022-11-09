@@ -3,31 +3,35 @@ import React from 'react'
 import background from "../assets/images/background.png"
 import CityList from './CityList'
 import Header from '../components/Header'
-
+import { useSelector } from 'react-redux'
 
 const Favourite = ({navigation}) => {
+
+  const data=useSelector(state =>state.weather.value)
+
   const handleBack=()=>{
     navigation.goBack();
       
     }
-    // const handlePress=()=>{
-    //   Alert.alert("Are you sure want to remove all the favourites",
-    //   [
-    //     {
-    //       text: 'NO',
-    //       onPress:()=>{
-    //         console.log("cancel presses")
-    //     }
-    //   },
-    //     {
-    //       text: 'YES',
-    //       onPress:()=>{
-    //         console.log("Ok pressed")
-    //       }
-    //     }
-    //   ]
-    //   )
-    // }
+    const handlePress=()=>{
+      Alert.alert("","Are you sure want to remove all the favourites",
+      [
+        {
+          text: 'NO',
+          onPress:()=>{
+            console.log("cancel presses")
+        },
+        style:{color:"#673AB7"}
+      },
+        {
+          text: 'YES',
+          onPress:()=>{
+            console.log("Ok pressed")
+          }
+        }
+      ]
+      )
+    }
 
   return (
     <View style={styles.container}>
@@ -39,8 +43,8 @@ const Favourite = ({navigation}) => {
           
           <Header onPress={handleBack} name={'Favourite'}/>
           <View style={styles.headerText}>
-            <Text style={styles.cityText}>6 City added as favourite</Text>
-            <TouchableOpacity >
+            <Text style={styles.cityText}>{data.length} City added as favourite</Text>
+            <TouchableOpacity onPress={handlePress} >
             <Text style={styles.removeText} >Remove All</Text>
             </TouchableOpacity>
           </View>

@@ -4,6 +4,8 @@ import {
   View,
   ImageBackground,
   SafeAreaView,
+  TouchableOpacity,
+  Alert
 } from 'react-native';
 import React from 'react';
 import background from '../assets/images/background.png';
@@ -13,8 +15,27 @@ import Header from '../components/Header'
 const RecentSearch = ({navigation}) => {
   const handleBack=()=>{
     navigation.goBack();
-      
     }
+    const handlePress=()=>{
+      Alert.alert("","Are you sure want to remove all the favourites",
+      [
+        {
+          text: 'NO',
+          onPress:()=>{
+            console.log("No pressed")
+        },
+        style:{color:"#673AB7"}
+      },
+        {
+          text: 'YES',
+          onPress:()=>{
+            console.log("Yes pressed")
+          }
+        }
+      ]
+      )
+    }
+
   return (
     <View style={styles.container}>
       <ImageBackground
@@ -25,7 +46,9 @@ const RecentSearch = ({navigation}) => {
           <Header onPress={handleBack} name={'Recent Search'} />
           <View style={styles.headerText}>
             <Text style={styles.cityText}>You recently searched for</Text>
+            <TouchableOpacity onPress={handlePress}>
             <Text style={styles.clearText}>Clear All</Text>
+            </TouchableOpacity>
           </View>
           <View style={{flex: 1, marginTop: 7}}>
 
