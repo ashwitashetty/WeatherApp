@@ -1,62 +1,43 @@
-import {createSlice} from '@reduxjs/toolkit';
+import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
 
-const initialState=[
-    {   
-        id:1,
-        city: 'Udupi, Karnataka',
-        source: require('/Volumes/Development/WeatherApp/src/assets/images/icon_mostly_sunny_small.png'),
-        temperature:"31",
-        description:"Mostly Sunny"
+const BASE_URL = 'https://weatherapi-com.p.rapidapi.com/';
+export const getData = createAsyncThunk('weather/getData', async string => {
+  const options = {
+    method: 'GET',
+    headers: {
+      'X-RapidAPI-Key': '9bfcadfddfmsh7a0571419a27e28p16f0fajsn6ec57357a78d',
+      'X-RapidAPI-Host': 'weatherapi-com.p.rapidapi.com',
     },
-    {
-        id:2,
-        city: 'Bengaluru, Karnataka',
-    source: require('/Volumes/Development/WeatherApp/src/assets/images/icon_rain_small.png'),
-        temperature:"29",
-        description:"Rain"
-    },
-    {
-        id:3,
-        city: 'Mumbai, Maharashtra',
-    source: require('/Volumes/Development/WeatherApp/src/assets/images/icon_mostly_cloudy_small.png'),
-        temperature:"32",
-        description:"Mostly Cloudy"
-    },
-    { 
-        id:4,
-        city: 'Kolkatta, West Bengal',
-    source: require('/Volumes/Development/WeatherApp/src/assets/images/icon_partly_cloudy_small.png'),
-        temperature:"30",
-        description:"Mostly Cloudy"
-    },
-    {
-        id:5,
-        city: 'Panaji, Goa',
-        source: require('/Volumes/Development/WeatherApp/src/assets/images/icon_thunderstorm_small.png'),
-        temperature:"31",
-        description:"Partly Cloudy"
-    },
-    {
-        id:6,
-        city: 'Newyork, United States',
-    source: require('/Volumes/Development/WeatherApp/src/assets/images/icon_clear_night_small.png'),
-        temperature:"24",
-        description:"Clear Night"
-    },
-   
-]
+  };
+  const response = await fetch(BASE_URL + `current.json?q=${string}`, options);
+  try {
+    const data = response.json();
+    console.log('sdfg', data);
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+});
 
-export const WeatherSlice =createSlice({
-    name:"weather",
-    initialState:{
-        value:initialState
+export const WeatherSlice = createSlice({
+  name: 'weather',
+  initialState: {
+    list: [],
+    status: null,
+  },
+
+  extraReducers: {
+    [getData.pending]: (state, action) => {
+      state.status = 'loading';
     },
-    reducers:{
-        // addFav:()=>{
+    [getData.fulfilled]: (state, {payload}) => {
+      state.list = payload;
+      state.status = 'success';
+    },
+    [getData.rejected]: (state, action) => {
+      state.status = 'failed';
+    },
+  },
+});
 
-        // }
-    }
-})
-
-export const {} = WeatherSlice.actions;
 export default WeatherSlice.reducer;

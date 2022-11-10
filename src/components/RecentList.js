@@ -10,16 +10,17 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import {useSelector} from 'react-redux';
-import Toast from 'react-native-simple-toast';
 
 import {useDispatch} from 'react-redux';
-import {deleteFav} from '../redux/FavouriteSlice';
+import {deleteRecentCity} from '../redux/FavouriteSlice';
 import {setFavourite} from '../redux/FavouriteSlice';
-import { getData } from '../redux/WeatherSlice';
 
-const CityList = () => {
+import {getData} from '../redux/WeatherSlice';
+
+const RecentList = ({navigation}) => {
   const dispatch = useDispatch();
-  const data = useSelector(state => state.favourite.value);
+  const data = useSelector(state => state.favourite.recent);
+  const favourite = useSelector(state => state.favourite.favourite);
   return (
     <View>
       <FlatList
@@ -27,13 +28,14 @@ const CityList = () => {
         keyExtractor={item => item.city}
         renderItem={({item}) => (
           <Pressable
-          onPress={() => {
-            dispatch(getData(item.id));
-            navigation.navigate('HomeScreen');
-          }}
-            onLongPress={() => {
-              dispatch(deleteFav({id: item.city}));
-              dispatch(setFavourite(false));
+            onPress={() => {
+              dispatch(getData(item.id));
+              {
+                item.favourite
+                  ? dispatch(setFavourite(true))
+                  : dispatch(setFavourite(false));
+              }
+              navigation.navigate('HomeScreen');
             }}>
             <View style={styles.listItem}>
               <View>
@@ -42,20 +44,28 @@ const CityList = () => {
                   <Image source={item.source} style={styles.weather} />
                   <Text style={styles.actualTemp}>{item.temperature}</Text>
                   <Text style={styles.unit}>°C</Text>
-
-                  <Text style={styles.description}>{item.description}</Text>
+                  <View>
+                    <Text style={styles.description}>{item.description}</Text>
+                  </View>
                 </View>
               </View>
+
               <View>
                 <TouchableOpacity
                   onPress={() => {
-                    dispatch(deleteFav({id: item.city}));
-                    dispatch(setFavourite(false));
+                    dispatch(deleteRecentCity({id: item.city}));
                   }}>
-                  <Image
-                    source={require('/Volumes/Development/WeatherApp/src/assets/images/icon_favourite_active.png')}
-                    style={styles.favIcon}
-                  />
+                  {item.favourite ? (
+                    <Image
+                      source={require('/Volumes/Development/WeatherApp/src/assets/images/icon_favourite_active.png')}
+                      style={styles.favIcon}
+                    />
+                  ) : (
+                    <Image
+                      source={require('/Volumes/Development/WeatherApp/src/assets/images/icon_favourite.png')}
+                      style={styles.favIcon}
+                    />
+                  )}
                 </TouchableOpacity>
               </View>
             </View>
@@ -66,7 +76,7 @@ const CityList = () => {
   );
 };
 
-export default CityList;
+export default RecentList;
 
 const styles = StyleSheet.create({
   content: {
@@ -81,7 +91,6 @@ const styles = StyleSheet.create({
     fontSize: 13,
     letterSpacing: 0,
     lineHeight: 15,
-    fontFamily: 'Roboto-Regular',
   },
   removeAll: {
     height: 15,
@@ -127,7 +136,9 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 16,
     marginRight: 1,
+    fontFamily: 'Roboto-Regular',
   },
+
   actualTemp: {
     height: 21,
     color: '#FFFFFF',

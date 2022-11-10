@@ -5,36 +5,39 @@ import {
   ImageBackground,
   SafeAreaView,
   TouchableOpacity,
-  Alert
+  Alert,
 } from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import background from '../assets/images/background.png';
-import CityList from './CityList';
-import Header from '../components/Header'
+
+import Header from '../components/Header';
+import RecentList from '../components/RecentList';
+import NoRecentSearch from '../components/NoRecentSearch';
+import {useDispatch, useSelector} from 'react-redux';
+import {clearAll} from '../redux/FavouriteSlice';
 
 const RecentSearch = ({navigation}) => {
-  const handleBack=()=>{
+  const data = useSelector(state => state.favourite.recent);
+  const [remove, setRemove] = useState(false);
+
+  const dispatch = useDispatch();
+  const handleBack = () => {
     navigation.goBack();
-    }
-    const handlePress=()=>{
-      Alert.alert("","Are you sure want to remove all the favourites",
-      [
-        {
-          text: 'NO',
-          onPress:()=>{
-            console.log("No pressed")
-        },
-        style:{color:"#673AB7"}
+  };
+  const handlePress = () =>
+    Alert.alert('', 'Are you sure want to remove all the favourites?', [
+      {
+        text: 'NO',
+        onPress: () => console.log('No Pressed'),
       },
-        {
-          text: 'YES',
-          onPress:()=>{
-            console.log("Yes pressed")
-          }
-        }
-      ]
-      )
-    }
+      {
+        text: 'YES',
+        onPress: () => {
+          dispatch(clearAll());
+          setRemove(!remove);
+        },
+      },
+    ]);
 
   return (
     <View style={styles.container}>
@@ -44,19 +47,22 @@ const RecentSearch = ({navigation}) => {
         style={styles.backgroundImage}>
         <SafeAreaView style={{flex: 1}}>
           <Header onPress={handleBack} name={'Recent Search'} />
-          <View style={styles.headerText}>
-            <Text style={styles.cityText}>You recently searched for</Text>
-            <TouchableOpacity onPress={handlePress}>
-            <Text style={styles.clearText}>Clear All</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={{flex: 1, marginTop: 7}}>
 
-
-            {/* <CityList /> */}
-
-
-          </View>
+          {!remove ? (
+            <>
+              <View style={styles.headerText}>
+                <Text style={styles.cityText}>You recently searched for</Text>
+                <TouchableOpacity navigation={navigation} onPress={handlePress}>
+                  <Text style={styles.clearText}>Clear All</Text>
+                </TouchableOpacity>
+              </View>
+              <View style={{flex: 1, marginTop: 7}}>
+                <RecentList navigation={navigation} />
+              </View>
+            </>
+          ) : (
+            <NoRecentSearch />
+          )}
         </SafeAreaView>
       </ImageBackground>
     </View>
@@ -85,7 +91,7 @@ const styles = StyleSheet.create({
     height: 21,
     width: 166,
     color: '#FFFFFF',
-    //   fontFamily: Roboto;
+    fontFamily: 'Roboto-Regular',
     fontSize: 18,
     lineHeight: 21,
     textAlign: 'center',
@@ -98,23 +104,22 @@ const styles = StyleSheet.create({
   },
   cityText: {
     height: 15,
-    // width: 145,
+
     color: '#FFFFFF',
-    // font-family: Roboto;
     fontSize: 13,
     letterSpacing: 0,
     lineHeight: 15,
     fontWeight: '500',
+    fontFamily: 'Roboto-Regular',
   },
   clearText: {
     height: 15,
-    // width: 66,
     color: '#FFFFFF',
-    // font-family: Roboto;
     fontSize: 13,
     fontWeight: '500',
     letterSpacing: 0,
     lineHeight: 15,
     textAlign: 'right',
+    fontFamily: 'Roboto-Regular',
   },
 });
