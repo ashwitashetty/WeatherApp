@@ -82,9 +82,16 @@ const HomeScreen = ({navigation}) => {
   };
 
   const handlePress = () => {
-    setClicked(!clicked), dispatch(setFavourite(clicked));
-    dispatch(addFav(obj));
-    favourite ? dispatch(deleteFav(obj)) : dispatch(addFav(obj));
+
+ 
+    favourite ? 
+    (
+      dispatch(setFavourite(false)),
+      dispatch(deleteFav(obj))) 
+    : 
+    (
+      dispatch(setFavourite(true)),
+      dispatch(addFav(obj)))
   };
   return (
     <>

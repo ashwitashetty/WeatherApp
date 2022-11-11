@@ -14,13 +14,13 @@ import CityList from './CityList';
 import Header from '../components/Header';
 import {useSelector} from 'react-redux';
 import NoFavourite from '../components/NoFavourite';
-import { useDispatch } from 'react-redux';
-import { removeAll } from '../redux/FavouriteSlice';
+import {useDispatch} from 'react-redux';
+import {removeAll} from '../redux/FavouriteSlice';
 
 const Favourite = ({navigation}) => {
   const data = useSelector(state => state.favourite.value);
-  const [remove,setRemove]=useState(false)
-  const dispatch=useDispatch();
+  const [remove, setRemove] = useState(false);
+  const dispatch = useDispatch();
 
   const handleBack = () => {
     navigation.goBack();
@@ -33,9 +33,12 @@ const Favourite = ({navigation}) => {
         onPress: () => console.log('No Pressed'),
       },
       {
-        text: 'YES', onPress: () => {
-        dispatch(removeAll())
-        setRemove(!remove)}},
+        text: 'YES',
+        onPress: () => {
+          dispatch(removeAll());
+          setRemove(!remove);
+        },
+      },
     ]);
   };
 
@@ -48,7 +51,7 @@ const Favourite = ({navigation}) => {
         <SafeAreaView style={{flex: 1}}>
           <Header onPress={handleBack} name={'Favourite'} />
 
-          {!remove? (
+          {!remove ? (
             <>
               <View style={styles.headerText}>
                 <Text style={styles.cityText}>
@@ -59,7 +62,7 @@ const Favourite = ({navigation}) => {
                 </TouchableOpacity>
               </View>
               <View style={{flex: 1, marginTop: 7}}>
-                <CityList navigation={navigation}/>
+                <CityList navigation={navigation} />
               </View>
             </>
           ) : (

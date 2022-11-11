@@ -12,7 +12,7 @@ export const FavouriteSlice = createSlice({
       const val = state.value.map(value => value.id);
 
       if (val.includes(action.payload.id)) {
-        console.log('Already exists');
+        alert('Already exists');
       } else {
         state.value.push(action.payload);
       }
