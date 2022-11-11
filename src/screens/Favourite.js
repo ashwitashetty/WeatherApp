@@ -4,7 +4,7 @@ import {
   View,
   ImageBackground,
   SafeAreaView,
-  FlatList,
+  StatusBar,
   TouchableOpacity,
   Alert,
 } from 'react-native';
@@ -15,11 +15,11 @@ import Header from '../components/Header';
 import {useSelector} from 'react-redux';
 import NoFavourite from '../components/NoFavourite';
 import {useDispatch} from 'react-redux';
-import {removeAll} from '../redux/FavouriteSlice';
+import {removeAll, setFavourite} from '../redux/FavouriteSlice';
 
 const Favourite = ({navigation}) => {
   const data = useSelector(state => state.favourite.value);
-  const [remove, setRemove] = useState(false);
+
   const dispatch = useDispatch();
 
   const handleBack = () => {
@@ -36,7 +36,8 @@ const Favourite = ({navigation}) => {
         text: 'YES',
         onPress: () => {
           dispatch(removeAll());
-          setRemove(!remove);
+          dispatch(setFavourite(true))
+         
         },
       },
     ]);
@@ -49,9 +50,14 @@ const Favourite = ({navigation}) => {
         resizeMode="cover"
         style={styles.backgroundImage}>
         <SafeAreaView style={{flex: 1}}>
+        <StatusBar
+          barStyle="dark-content"
+          hidden={false}
+          backgroundColor="#673AB7"
+        />
           <Header onPress={handleBack} name={'Favourite'} />
 
-          {!remove ? (
+          {data.length ? (
             <>
               <View style={styles.headerText}>
                 <Text style={styles.cityText}>
@@ -101,7 +107,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 25,
   },
-  headerText: {
+   headerText: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     margin: 16,

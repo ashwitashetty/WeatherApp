@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View, ScrollView, Image} from 'react-native';
+import {StyleSheet, Text, View, ScrollView, Image,useState} from 'react-native';
 import React from 'react';
 
 import icon_humidity_info from '../assets/images/icon_humidity_info.png';
@@ -6,7 +6,9 @@ import icon_precipitation_info from '../assets/images/icon_precipitation_info.pn
 import icon_temperature_info from '../assets/images/icon_temperature_info.png';
 import {useSelector} from 'react-redux';
 
+
 const ScrollBar = () => {
+
   const list = useSelector(state => state.weather.list);
   return (
     <View style={styles.detailView}>
@@ -17,7 +19,7 @@ const ScrollBar = () => {
               <Image source={icon_temperature_info} style={styles.tempIcon} />
               <View>
                 <Text style={styles.minmax}>Min - Max</Text>
-                <Text style={styles.tempNumber}>22°- 34°</Text>
+                <Text style={styles.tempNumber}>{list?.current?.temp_c -3}°- {list?.current?.temp_c + 3}°</Text>
               </View>
             </View>
           </View>
@@ -65,6 +67,8 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     height: 100,
     justifyContent: 'space-evenly',
+
+    
   },
   insideScroll: {
     flexDirection: 'row',

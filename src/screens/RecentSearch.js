@@ -6,6 +6,7 @@ import {
   SafeAreaView,
   TouchableOpacity,
   Alert,
+  StatusBar
 } from 'react-native';
 import React, {useState} from 'react';
 import background from '../assets/images/background.png';
@@ -18,7 +19,7 @@ import {clearAll} from '../redux/FavouriteSlice';
 
 const RecentSearch = ({navigation}) => {
   const data = useSelector(state => state.favourite.recent);
-  const [remove, setRemove] = useState(false);
+
 
   const dispatch = useDispatch();
   const handleBack = () => {
@@ -34,7 +35,7 @@ const RecentSearch = ({navigation}) => {
         text: 'YES',
         onPress: () => {
           dispatch(clearAll());
-          setRemove(!remove);
+      
         },
       },
     ]);
@@ -46,9 +47,14 @@ const RecentSearch = ({navigation}) => {
         resizeMode="cover"
         style={styles.backgroundImage}>
         <SafeAreaView style={{flex: 1}}>
+        <StatusBar
+          barStyle="dark-content"
+          hidden={false}
+          backgroundColor="#673AB7"
+        />
           <Header onPress={handleBack} name={'Recent Search'} />
 
-          {!remove ? (
+          {data.length ? (
             <>
               <View style={styles.headerText}>
                 <Text style={styles.cityText}>You recently searched for</Text>

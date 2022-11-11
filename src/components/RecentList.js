@@ -39,7 +39,7 @@ const RecentList = ({navigation}) => {
             }}>
             <View style={styles.listItem}>
               <View>
-                <Text style={styles.location}>{item.city}</Text>
+                <Text style={styles.location}>{item.city}, {item.region}</Text>
                 <View style={styles.tempDetails}>
                   <Image source={item.source} style={styles.weather} />
                   <Text style={styles.actualTemp}>{item.temperature}</Text>

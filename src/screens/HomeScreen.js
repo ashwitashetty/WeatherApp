@@ -75,7 +75,7 @@ const HomeScreen = ({navigation}) => {
   const obj = {
     id: list.location?.name,
     city: list.location?.name,
-
+    region:list.location?.region,
     source: source,
     temperature: celcius,
     description: list.current?.condition.text,
@@ -96,11 +96,11 @@ const HomeScreen = ({navigation}) => {
   return (
     <>
       {!search ? (
-        <View style={styles.container}>
-          <ImageBackground
+        <ImageBackground
             source={background}
             resizeMode="cover"
             style={styles.backgroundImage}>
+        <SafeAreaView style={styles.container}>
             <ScrollView>
               <View style={styles.topView}>
                 <View style={styles.topView1}>
@@ -185,8 +185,8 @@ const HomeScreen = ({navigation}) => {
               </View>
             </ScrollView>
             <ScrollBar />
+        </SafeAreaView>
           </ImageBackground>
-        </View>
       ) : (
         <SearchScreen setSearch={setSearch} search={search} />
       )}
@@ -199,24 +199,30 @@ export default HomeScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  
   },
   backgroundImage: {
     flex: 1,
+
+
   },
   topView1: {
     flexDirection: 'row',
     alignItems: 'center',
+ 
   },
   topView: {
-    margin: 22,
-    marginTop: 40,
+    paddingHorizontal:"5%",
+    marginTop: 10,
     flexDirection: 'row',
     justifyContent: 'space-between',
+    
   },
   menu: {
     height: 12,
     width: 18,
     marginRight: '20%',
+ 
   },
   logo: {
     height: 24,
@@ -252,10 +258,12 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 10,
     fontFamily: 'Roboto-Regular',
+  
   },
   favView: {
     flexDirection: 'row',
     marginTop: 23,
+
   },
   favouriteIcon: {
     height: 17,
@@ -280,12 +288,11 @@ const styles = StyleSheet.create({
 
   tempItem: {
     flexDirection: 'row',
-    alignItems: 'baseline',
+    // alignItems: 'baseline',
     marginTop: 13,
   },
   mostlySunny: {
     height: 21,
-
     color: '#FFFFFF',
     fontSize: 18,
     letterSpacing: 0,
@@ -296,7 +303,6 @@ const styles = StyleSheet.create({
   },
   tempValue: {
     height: 61,
-
     color: '#FFFFFF',
     fontSize: 52,
     fontWeight: '500',

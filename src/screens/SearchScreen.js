@@ -45,6 +45,7 @@ const SearchScreen = ({setSearch, search}) => {
   const obj = {
     id: list.location?.name,
     city: list.location?.name,
+    region:list.location?.region,
     source: source,
     temperature: celcius,
     description: list.current?.condition.text,

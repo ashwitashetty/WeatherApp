@@ -12,7 +12,6 @@ export const getData = createAsyncThunk('weather/getData', async string => {
   const response = await fetch(BASE_URL + `current.json?q=${string}`, options);
   try {
     const data = response.json();
-    console.log('sdfg', data);
     return data;
   } catch (error) {
     console.log(error);
@@ -25,6 +24,7 @@ export const WeatherSlice = createSlice({
     list: [],
     status: null,
   },
+ 
 
   extraReducers: {
     [getData.pending]: (state, action) => {

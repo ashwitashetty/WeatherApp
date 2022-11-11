@@ -17,7 +17,7 @@ import {deleteFav} from '../redux/FavouriteSlice';
 import {setFavourite} from '../redux/FavouriteSlice';
 import { getData } from '../redux/WeatherSlice';
 
-const CityList = () => {
+const CityList = ({navigation}) => {
   const dispatch = useDispatch();
   const data = useSelector(state => state.favourite.value);
   return (
@@ -37,7 +37,7 @@ const CityList = () => {
             }}>
             <View style={styles.listItem}>
               <View>
-                <Text style={styles.location}>{item.city}</Text>
+                <Text style={styles.location}>{item.city}, {item.region}</Text>
                 <View style={styles.tempDetails}>
                   <Image source={item.source} style={styles.weather} />
                   <Text style={styles.actualTemp}>{item.temperature}</Text>
